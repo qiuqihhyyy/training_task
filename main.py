@@ -7,11 +7,18 @@ from db import UrlsDAO
 app = FastAPI()
 
 
+@app.get("/short_url")
+async def get_url(short_url):
+    short_url = await UrlsDAO.find_one_or_none_by_url(data_short_url=short_url)
+    headers = {"short_url": f"{short_url.origin_url}", "id": f'{short_url.id}'}
+    return JSONResponse({"message": "short url in header"}, status_code=307, headers=headers)
+
+
 @app.get("/shorten-url-id")
-async def get(id):
+async def get_id(id):
     short_url = await UrlsDAO.find_one_or_none_by_id(data_id=id)
     headers = {"short_url": f"{short_url.origin_url}"}
-    return JSONResponse({"message": "shзшзort url in header"}, status_code=307, headers=headers)
+    return JSONResponse({"message": "short url in header"}, status_code=307, headers=headers)
 
 
 @app.post('/')
